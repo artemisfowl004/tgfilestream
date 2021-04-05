@@ -30,23 +30,11 @@ from .util import pack_id, get_file_name
 cwd = os.getcwd()
 log = logging.getLogger(__name__)
 
-AUTH_USERS = os.environ.get("AUTH_USERS", "").split(" ")
-for i in range(0, len(AUTH_USERS)): 
-    AUTH_USERS[i] = int(AUTH_USERS[i])
-
 client = TelegramClient(session_name, api_id, api_hash)
 transfer = ParallelTransferrer(client)
 
 @client.on(events.NewMessage)
-async def handle_message(evt: events.NewMessage.Event) -> None:
-    if not evt.sender_id in AUTH_USERS:
-        await evt.reply("Not authenticated ❌")
-        print(AUTH_USERS)
-        print(type(evt.sender_id))
-        
-        return
-        
-
+async def handle_message(evt: events.NewMessage.Event) -> None:        
     if not evt.is_private:
         await evt.reply(group_chat_message)
         return        
